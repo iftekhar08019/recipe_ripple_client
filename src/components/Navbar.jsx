@@ -55,8 +55,8 @@ const Navbar = () => {
           </ul>
         </div>
         <a className="btn btn-ghost text-xl">
-          <img className="w-15" src={logo}></img>
-          <h1>Recipe Ripple</h1>
+          <img className="w-9" src={logo}></img>
+          <h1 className="text-sm">Recipe Ripple</h1>
         </a>
       </div>
 
@@ -77,18 +77,18 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <div className="navbar-end">
+      <div className="navbar-end ">
         {!user ? (
           <>
             <button
               onClick={() => navigate("/login")}
-              className="btn btn-outline mr-2"
+              className="btn btn-outline mr-2 w-15 text-sm"
             >
               Login
             </button>
             <button
               onClick={() => navigate("/register")}
-              className="btn btn-primary"
+              className="btn btn-primary w-20 text-sm"
             >
               Register
             </button>
@@ -116,16 +116,7 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a
-                    className="justify-between"
-                    onClick={() => navigate("/profile")}
-                  >
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
-                </li>
-                <li>
-                  <a onClick={() => navigate("/settings")}>Settings</a>
+                <h4>{user.name}</h4>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>
