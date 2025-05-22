@@ -37,7 +37,7 @@ const slides = [
 const HeroSlider = () => {
   return (
     <>
-    <h1 className="lg:text-4xl text-xl font-bold text-black text-center my-10">Recipe Ripple: Your place for All Recipes</h1>
+    <h1 className="lg:text-4xl text-xl font-bold text-center my-10">Recipe Ripple: Your place for All Recipes</h1>
         <div className="w-full flex justify-center my-12 ">
         
       <Swiper

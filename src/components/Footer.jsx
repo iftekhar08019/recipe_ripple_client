@@ -11,7 +11,7 @@ import {
 function Footer() {
   return (
     <>
-      <footer className="footer footer-horizontal footer-center bg-white text-black p-10">
+      <footer className="footer footer-horizontal footer-center p-10">
         <aside>
           <Link
             to="/"

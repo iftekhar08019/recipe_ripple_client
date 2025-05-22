@@ -5,6 +5,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  console.log(user);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -116,7 +117,10 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                <h4>{user.name}</h4>
+                <h4>{user.displayName}</h4>
+                </li>
+                                <li>
+                <h4>{user.email}</h4>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

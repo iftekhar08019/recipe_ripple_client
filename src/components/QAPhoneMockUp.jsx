@@ -40,7 +40,7 @@ const QAPhoneMockup = () => {
 
         {/* Right side: Phone mockup */}
     
-        <div className="flex-1 flex justify-center md:justify-end hidden lg:block">
+        <div className="flex-1 justify-center md:justify-end hidden lg:block">
             
           <div className="mockup-phone border-primary ">
             <div className="mockup-phone-camera"></div>
