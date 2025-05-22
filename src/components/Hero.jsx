@@ -36,7 +36,10 @@ const slides = [
 
 const HeroSlider = () => {
   return (
-    <div className="w-full flex justify-center py-12 bg-gray-100">
+    <>
+    <h1 className="lg:text-4xl text-xl font-bold text-black text-center my-10">Recipe Ripple: Your place for All Recipes</h1>
+        <div className="w-full flex justify-center my-12 ">
+        
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
@@ -56,7 +59,7 @@ const HeroSlider = () => {
         {slides.map(({ url, title, description }, index) => (
           <SwiperSlide
             key={index}
-            className="relative bg-white rounded-lg overflow-hidden cursor-pointer"
+            className="relative rounded-lg overflow-hidden cursor-pointer"
             style={{ width: "650px", height: "410px", boxShadow: "0 8px 15px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06)" }}
           >
             <img
@@ -74,6 +77,8 @@ const HeroSlider = () => {
         ))}
       </Swiper>
     </div>
+    </>
+
   );
 };
 
