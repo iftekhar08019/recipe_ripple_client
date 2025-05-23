@@ -5,6 +5,7 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import { Typewriter } from "react-simple-typewriter";
 
 const slides = [
   {
@@ -37,48 +38,66 @@ const slides = [
 const HeroSlider = () => {
   return (
     <>
-    <h1 className="lg:text-4xl text-xl font-bold text-center my-10">Recipe Ripple: Your place for All Recipes</h1>
-        <div className="w-full flex justify-center my-12 ">
-        
-      <Swiper
-        effect={"coverflow"}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 100,
-          modifier: 2.5,
-          slideShadows: false,
-        }}
-        pagination={{ clickable: true }}
-        modules={[EffectCoverflow, Pagination]}
-        className="max-w-[1100px]"
-      >
-        {slides.map(({ url, title, description }, index) => (
-          <SwiperSlide
-            key={index}
-            className="relative rounded-lg overflow-hidden cursor-pointer"
-            style={{ width: "650px", height: "410px", boxShadow: "0 8px 15px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06)" }}
-          >
-            <img
-              src={url}
-              alt={title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-            {/* Text overlay */}
-            <div className="hero-overlay absolute inset-0 flex flex-col justify-center items-center p-4 text-center text-white">
-              <h2 className="text-lg sm:text-xl font-bold">{title}</h2>
-              <p className="text-sm sm:text-base mt-1">{description}</p>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+      <h1 className="lg:text-4xl text-xl font-bold text-center my-10">
+        Recipe Ripple:
+        <Typewriter
+          words={[
+            "Your place for All Recipes",
+            "Discover. Cook. Share.",
+            "Delicious Moments Begin Here!",
+          ]}
+          loop={true}
+          cursor
+          cursorStyle="|"
+          typeSpeed={70}
+          deleteSpeed={50}
+          delaySpeed={1500}
+        />
+      </h1>
+      <div className="w-full flex justify-center my-12 ">
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
+            slideShadows: false,
+          }}
+          pagination={{ clickable: true }}
+          modules={[EffectCoverflow, Pagination]}
+          className="max-w-[1100px]"
+        >
+          {slides.map(({ url, title, description }, index) => (
+            <SwiperSlide
+              key={index}
+              className="relative rounded-lg overflow-hidden cursor-pointer"
+              style={{
+                width: "650px",
+                height: "410px",
+                boxShadow:
+                  "0 8px 15px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06)",
+              }}
+            >
+              <img
+                src={url}
+                alt={title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              {/* Text overlay */}
+              <div className="hero-overlay absolute inset-0 flex flex-col justify-center items-center p-4 text-center text-white">
+                <h2 className="text-lg sm:text-xl font-bold">{title}</h2>
+                <p className="text-sm sm:text-base mt-1">{description}</p>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </>
-
   );
 };
 
