@@ -1,38 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaHeart } from "react-icons/fa";
-import { useParams } from "react-router"; // for getting recipe ID from URL
+import { useParams } from "react-router"; // note: 'react-router-dom' is typical for web
+import { AuthContext } from "../Provider/AuthProvider";
 
 const RecipeDetails = () => {
-  const { id } = useParams(); // Assuming your route is like /recipes/:id
+  const { id } = useParams();
+  const { user } = useContext(AuthContext);
+
   const [recipe, setRecipe] = useState(null);
   const [mainImage, setMainImage] = useState(null);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    // Fetch recipe details by ID
+    if (!id) return;
+
     fetch(`http://localhost:3000/recipes/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setRecipe(data);
         setMainImage(data.image);
         setLikes(data.likeCount || 0);
+
+        // Check if current user liked this recipe
+        if (user?.email && data.likedBy?.includes(user.email)) {
+          setLiked(true);
+        } else {
+          setLiked(false);
+        }
       })
       .catch((err) => console.error("Failed to fetch recipe details:", err));
-  }, [id]);
+  }, [id, user?.email]);
 
   const handleLike = async () => {
-    const newLikes = liked ? likes - 1 : likes + 1;
+    if (!user?.email) {
+      alert("You must be logged in to like a recipe.");
+      return;
+    }
 
     try {
-      const res = await fetch(`http://localhost:3000/recipes/${id}`, {
+      const res = await fetch(`http://localhost:3000/recipes/${id}/like`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ likeCount: newLikes }),
+        body: JSON.stringify({ userEmail: user.email, like: !liked }),
       });
-      if (!res.ok) throw new Error("Failed to update like count");
 
-      setLikes(newLikes);
+      if (!res.ok) throw new Error("Failed to update like");
+
+      const data = await res.json();
+
+      setLikes(data.likeCount);
       setLiked(!liked);
     } catch (error) {
       console.error(error);
@@ -51,12 +68,13 @@ const RecipeDetails = () => {
     categories,
   } = recipe;
 
-
-
   return (
     <div className="bg-gray-100 min-h-screen p-6">
+      <h1 className="lg:text-4xl text-xl font-bold text-center my-15">
+        {title}'s Recipe
+      </h1>
       <div className="container mx-auto px-4 py-8">
-        <div className="flex  mx-4 gap-8">
+        <div className="flex flex-col lg:flex-row mx-4 gap-8">
           {/* Images Section */}
           <div className="w-full md:w-1/2 px-4">
             <img
@@ -64,7 +82,6 @@ const RecipeDetails = () => {
               alt={title}
               className="w-full h-auto rounded-lg shadow-md mb-4 object-cover max-h-[400px]"
             />
-
           </div>
 
           {/* Details Section */}
@@ -74,7 +91,8 @@ const RecipeDetails = () => {
               <span className="font-semibold">Cuisine Type:</span> {cuisineType}
             </p>
             <p className="text-gray-600 mb-2">
-              <span className="font-semibold">Preparation Time:</span> {preparationTime} mins
+              <span className="font-semibold">Preparation Time:</span>{" "}
+              {preparationTime} mins
             </p>
 
             <div className="mb-4">
@@ -102,7 +120,9 @@ const RecipeDetails = () => {
 
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-1">Instructions:</h3>
-              <p className="whitespace-pre-wrap text-gray-700">{instructions}</p>
+              <p className="whitespace-pre-wrap text-gray-700">
+                {instructions}
+              </p>
             </div>
 
             <div className="flex items-center gap-4">
@@ -115,7 +135,9 @@ const RecipeDetails = () => {
                 <FaHeart />
                 {liked ? "Liked" : "Like"}
               </button>
-              <span>{likes} {likes === 1 ? "Like" : "Likes"}</span>
+              <span>
+                {likes} {likes === 1 ? "Like" : "Likes"}
+              </span>
             </div>
           </div>
         </div>
