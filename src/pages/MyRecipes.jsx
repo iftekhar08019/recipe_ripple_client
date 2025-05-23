@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { AuthContext } from "../Provider/AuthProvider";
+import Swal from "sweetalert2";
 
 const initialRecipeState = {
   title: "",
@@ -16,49 +16,19 @@ const initialRecipeState = {
 
 const MyRecipes = () => {
   const { user } = useContext(AuthContext);
-
-  // Mock fetch user's recipes from DB (replace with your actual DB call)
   const [recipes, setRecipes] = useState([]);
-
-  // For update modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
   const [formData, setFormData] = useState(initialRecipeState);
 
   useEffect(() => {
-    // TODO: fetch user recipes from DB filtering by user.email or uid
-    // MOCK:
-    if (user) {
-      setRecipes([
-        {
-          id: "1",
-          title: "Spaghetti Bolognese",
-          image:
-            "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-          ingredients: "Spaghetti, minced meat, tomato sauce, onions, garlic",
-          instructions: "Cook spaghetti. Prepare sauce. Mix and serve.",
-          cuisineType: "Italian",
-          preparationTime: 45,
-          categories: ["Lunch", "Dinner"],
-          likeCount: 10,
-          userEmail: user.email,
-        },
-        {
-          id: "2",
-          title: "Vegan Salad",
-          image:
-            "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-          ingredients: "Lettuce, tomatoes, cucumbers, olive oil, lemon",
-          instructions: "Mix all ingredients and serve fresh.",
-          cuisineType: "Others",
-          preparationTime: 15,
-          categories: ["Breakfast", "Vegan"],
-          likeCount: 25,
-          userEmail: user.email,
-        },
-      ]);
+    if (user?.email) {
+      fetch(`http://localhost:3000/recipes?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setRecipes(data))
+        .catch((err) => console.error("Failed to fetch recipes", err));
     }
-  }, [user]);
+  }, [user?.email]);
 
   const openEditModal = (recipe) => {
     setEditingRecipe(recipe);
@@ -85,18 +55,78 @@ const MyRecipes = () => {
     }
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    // Update in DB here (mock)
-    setRecipes((prev) =>
-      prev.map((r) => (r.id === editingRecipe.id ? { ...formData } : r))
-    );
-    closeEditModal();
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/recipes/${editingRecipe._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (!res.ok) throw new Error("Update failed");
+
+      setRecipes((prev) =>
+        prev.map((r) => (r._id === editingRecipe._id ? formData : r))
+      );
+      closeEditModal();
+
+      await Swal.fire({
+        icon: "success",
+        title: "Recipe Updated",
+        text: "Your recipe has been updated successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "Failed to update recipe. Please try again.",
+      });
+    }
   };
 
-  const handleDelete = (id) => {
-    // Delete from DB here (mock)
-    setRecipes((prev) => prev.filter((r) => r.id !== id));
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete this recipe? This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/recipes/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+
+      setRecipes((prev) => prev.filter((r) => r._id !== id));
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your recipe has been deleted.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Delete Failed",
+        text: "Failed to delete recipe. Please try again.",
+      });
+    }
   };
 
   if (!user) return <p className="text-center p-10">Loading user info...</p>;
@@ -106,12 +136,17 @@ const MyRecipes = () => {
       <h1 className="text-4xl font-bold mb-8 text-center">My Recipes</h1>
 
       {recipes.length === 0 && (
-        <p className="text-center text-gray-600">You have not added any recipes yet.</p>
+        <p className="text-center text-gray-600">
+          You have not added any recipes yet.
+        </p>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {recipes.map((recipe) => (
-          <div key={recipe.id} className="card bg-base-100 shadow-lg rounded-lg">
+          <div
+            key={recipe._id}
+            className="card bg-base-100 shadow-lg rounded-lg"
+          >
             <figure className="px-4 pt-4">
               <img
                 src={recipe.image}
@@ -142,7 +177,8 @@ const MyRecipes = () => {
                 {recipe.categories.join(", ")}
               </p>
               <p>
-                <span className="font-semibold">Likes: </span> {recipe.likeCount}
+                <span className="font-semibold">Likes: </span>{" "}
+                {recipe.likeCount}
               </p>
 
               <div className="card-actions justify-end gap-2 mt-4">
@@ -153,7 +189,7 @@ const MyRecipes = () => {
                   <FaEdit /> Update
                 </button>
                 <button
-                  onClick={() => handleDelete(recipe.id)}
+                  onClick={() => handleDelete(recipe._id)}
                   className="btn btn-sm btn-outline btn-error flex items-center gap-2"
                 >
                   <FaTrash /> Delete
@@ -186,7 +222,10 @@ const MyRecipes = () => {
 
               <h3 className="text-lg font-bold mb-4">Update Recipe</h3>
 
-              <form onSubmit={handleUpdate} className="space-y-4 max-h-[70vh] overflow-y-auto">
+              <form
+                onSubmit={handleUpdate}
+                className="space-y-4 max-h-[70vh] overflow-y-auto"
+              >
                 <input
                   name="title"
                   value={formData.title}
@@ -246,7 +285,9 @@ const MyRecipes = () => {
                 />
 
                 <div className="mt-2">
-                  <label className="block font-semibold mb-2">Categories:</label>
+                  <label className="block font-semibold mb-2">
+                    Categories:
+                  </label>
                   <div className="flex flex-wrap gap-4">
                     {["Breakfast", "Lunch", "Dinner", "Dessert", "Vegan"].map(
                       (cat) => (

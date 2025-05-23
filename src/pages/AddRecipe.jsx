@@ -41,26 +41,46 @@ const AddRecipePage = () => {
       },
     };
 
-    // TODO: Replace with your backend API call (e.g. fetch/axios)
-    console.log("Recipe added:", recipeData);
+    try {
+      const res = await fetch("http://localhost:3000/recipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipeData),
+      });
 
-    Swal.fire({
-      title: "Success!",
-      text: "Recipe added successfully.",
-      icon: "success",
-      confirmButtonText: "OK",
-    });
+      if (!res.ok) {
+        throw new Error(`Failed to add recipe: ${res.statusText}`);
+      }
 
-    setFormData({
-      title: "",
-      image: "",
-      ingredients: "",
-      instructions: "",
-      cuisineType: "",
-      preparationTime: "",
-      categories: [],
-      likeCount: 0,
-    });
+      const data = await res.json();
+      console.log("Recipe added:", data);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Recipe added successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+      setFormData({
+        title: "",
+        image: "",
+        ingredients: "",
+        instructions: "",
+        cuisineType: "",
+        preparationTime: "",
+        categories: [],
+        likeCount: 0,
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error.message || "Failed to add recipe",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

@@ -62,29 +62,80 @@ const Registration = () => {
         const user = result.user;
         updateUser({ displayName: name, photoURL: photo })
           .then(() => {
-            setUser({ ...user, displayName: name, photoURL: photo });
-            navigate(`${location.state ? location.state : "/"}`);
+            // Prepare user data to send to your server
+            const userProfile = {
+              name,
+              email,
+              photoURL: photo,
+              uid: user.uid, // optional, include user uid if you want
+            };
+
+            // POST user data to your backend
+            fetch("http://localhost:3000/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(userProfile),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                console.log("User saved to backend:", data);
+                setUser({ ...user, displayName: name, photoURL: photo });
+                navigate(location.state ? location.state : "/");
+              })
+              .catch((error) => {
+                console.error("Error saving user to backend:", error);
+                alert("Failed to save user data.");
+                setUser(user);
+                navigate(location.state ? location.state : "/");
+              });
           })
           .catch((error) => {
-            alert(error);
+            alert(error.message);
             setUser(user);
+            navigate(location.state ? location.state : "/");
           });
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage, errorCode);
+        alert(errorMessage);
       });
   };
+
   const handleGoogleSignIn = () => {
     googleSignIn() // Call googleSignIn method from AuthContext
       .then((result) => {
         const user = result.user;
-        alert(user.displayName, "registered successfully");
-        navigate(`${location.state ? location.state : "/"}`); // Redirect after successful login
+
+        // Prepare user data for backend
+        const userProfile = {
+          name: user.displayName || "",
+          email: user.email || "",
+          photoURL: user.photoURL || "",
+          uid: user.uid,
+        };
+
+        // Send user data to backend
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userProfile),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("User saved to backend:", data);
+            alert(`${user.displayName} registered successfully`);
+            navigate(location.state ? location.state : "/");
+          })
+          .catch((error) => {
+            console.error("Error saving user to backend:", error);
+            alert("User registered but failed to save user data.");
+            navigate(location.state ? location.state : "/");
+          });
       })
       .catch((error) => {
-        alert(error);
+        alert(error.message || "Google sign-in failed");
         setError("Something went wrong with Google login.");
       });
   };

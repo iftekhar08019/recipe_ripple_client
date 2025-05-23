@@ -6,7 +6,7 @@ const RecipeCard = ({
   recipe
 }) => {
 const navigate = useNavigate();
-const { id: recipeId, title, cuisineType, likeCount, image } = recipe || {};
+const { _id: recipeId, title, cuisineType, likeCount, image } = recipe || {};
 
 return (
     <div className="card bg-base-100 w-80 shadow-sm transition-transform duration-300 hover:scale-110 mt-6 ">

@@ -7,7 +7,7 @@ const AllRecipe = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/recipes.json")
+    fetch("http://localhost:3000/all-recipes/")
       .then((res) => res.json())
       .then((data) => {
         
@@ -24,7 +24,7 @@ const AllRecipe = () => {
         </h1>
         <div className="lg:w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+            <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
         </div>
       </div>

@@ -24,27 +24,30 @@ const router = createBrowserRouter([
         path: "/login",
         Component: Login,
       },
-        {
-            path: "/register",
-            Component: Registration,
-        },
-        {
-            path: "/add-recipe",
-            element: <PrivateRoute><AddRecipePage /></PrivateRoute>,
-        },
-                {
-            path: "/all-recipes",
-            Component: AllRecipe,
-        },
-        {
-            path: "/recipe",
-            Component: RecipeDetails,
-        },
+      {
+        path: "/register",
+        Component: Registration,
+      },
+      {
+        path: "/add-recipe",
+        element: (
+          <PrivateRoute>
+            <AddRecipePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/all-recipes",
+        Component: AllRecipe,
+      },
+      {
+        path: "/my-recipes",
+        Component: MyRecipes,
+      },
             {
-            path: "/my-recipes",
-            Component: MyRecipes,
-        },
-
+        path: "/recipes/:id",
+        Component: RecipeDetails,
+      },
     ],
   },
 ]);

@@ -1,66 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHeart } from "react-icons/fa";
+import { useParams } from "react-router"; // for getting recipe ID from URL
 
-const RecipeDetails = ({ recipe }) => {
-  // Destructure your recipe data:
+const RecipeDetails = () => {
+  const { id } = useParams(); // Assuming your route is like /recipes/:id
+  const [recipe, setRecipe] = useState(null);
+  const [mainImage, setMainImage] = useState(null);
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    // Fetch recipe details by ID
+    fetch(`http://localhost:3000/recipes/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRecipe(data);
+        setMainImage(data.image);
+        setLikes(data.likeCount || 0);
+      })
+      .catch((err) => console.error("Failed to fetch recipe details:", err));
+  }, [id]);
+
+  const handleLike = async () => {
+    const newLikes = liked ? likes - 1 : likes + 1;
+
+    try {
+      const res = await fetch(`http://localhost:3000/recipes/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ likeCount: newLikes }),
+      });
+      if (!res.ok) throw new Error("Failed to update like count");
+
+      setLikes(newLikes);
+      setLiked(!liked);
+    } catch (error) {
+      console.error(error);
+      alert("Could not update like count, please try again.");
+    }
+  };
+
+  if (!recipe) return <p className="text-center p-10">Loading recipe...</p>;
+
   const {
     title,
-    image,
     ingredients,
     instructions,
     cuisineType,
     preparationTime,
     categories,
-    likeCount: initialLikeCount,
   } = recipe;
 
-  // State for main image and like count
-  const [mainImage, setMainImage] = useState(image);
-  const [likes, setLikes] = useState(initialLikeCount || 0);
-  const [liked, setLiked] = useState(false);
 
-  // Example other images (could be from recipe.images array)
-  const thumbnails = [
-    image,
-    "https://images.unsplash.com/photo-1505751171710-1f6d0ace5a85?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1496957961599-e35b69ef5d7c?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1528148343865-51218c4a13e6?auto=format&fit=crop&w=300&q=80",
-  ];
-
-  const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-    setLiked(!liked);
-    // TODO: Update like count in DB here
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-wrap -mx-4 gap-8">
+        <div className="flex  mx-4 gap-8">
           {/* Images Section */}
           <div className="w-full md:w-1/2 px-4">
             <img
               src={mainImage}
               alt={title}
-              id="mainImage"
               className="w-full h-auto rounded-lg shadow-md mb-4 object-cover max-h-[400px]"
             />
-            <div className="flex gap-4 py-4 justify-center overflow-x-auto">
-              {thumbnails.map((src, idx) => (
-                <img
-                  key={idx}
-                  src={src}
-                  alt={`Thumbnail ${idx + 1}`}
-                  className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
-                  onClick={() => setMainImage(src)}
-                />
-              ))}
-            </div>
+
           </div>
 
           {/* Details Section */}
