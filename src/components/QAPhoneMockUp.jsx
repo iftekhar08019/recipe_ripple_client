@@ -1,5 +1,8 @@
 import React from "react";
 import logo from "../assets/logo.png";
+import Lottie from "lottie-react";
+import cookingAnimation from "../assets/Animation - 1748030630533.json";
+
 const QAPhoneMockup = () => {
   return (
     <>
@@ -39,22 +42,24 @@ const QAPhoneMockup = () => {
         </div>
 
         {/* Right side: Phone mockup */}
-    
+
         <div className="flex-1 justify-center md:justify-end hidden lg:block">
-            
           <div className="mockup-phone border-primary ">
             <div className="mockup-phone-camera"></div>
             <div className="mockup-phone-display bg-[#fbfbfb] flex flex-col justify-center items-center">
-                        <a className="btn btn-ghost text-xl">
-                          <img className="w-9" src={logo}></img>
-                          <h1 className="text-sm">Recipe Ripple</h1>
-                        </a>
-                <h1 className="text-2xl text-center">Come and Cook <br />With <br />Recipe Ripple</h1>
-              <img
-                alt="wallpaper"
-                src="https://cdn.dribbble.com/userupload/27165894/file/original-0a90d009f3864792265734f1ddfed3a5.gif"
-               
-              />
+                {" "}
+                <a className="btn btn-ghost text-xl">
+                  <img className="w-9" src={logo}></img>
+                  <h1 className="text-sm">Recipe Ripple</h1>
+                </a>
+                <h1 className="text-2xl text-center">
+                  Come and Cook <br />
+                  With <br />
+                  Recipe Ripple
+                </h1>
+                <div className="w-80 md:w-96">
+                  <Lottie animationData={cookingAnimation} loop={true} />
+                </div>
             </div>
           </div>
         </div>
