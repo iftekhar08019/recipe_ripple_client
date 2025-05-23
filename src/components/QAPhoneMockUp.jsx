@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../assets/logo.png";
 const QAPhoneMockup = () => {
   return (
     <>
@@ -9,7 +9,7 @@ const QAPhoneMockup = () => {
       <section className="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto p-6 md:p-12 gap-10">
         {/* Left side: Q&A */}
         <div className="flex-1 text-center md:text-left space-y-6">
-          <div className="space-y-4 text-gray-700">
+          <div className="space-y-4 ">
             <div>
               <h3 className="font-semibold text-xl">What is Recipe Ripple?</h3>
               <p>
@@ -45,6 +45,10 @@ const QAPhoneMockup = () => {
           <div className="mockup-phone border-primary ">
             <div className="mockup-phone-camera"></div>
             <div className="mockup-phone-display bg-[#fbfbfb] flex flex-col justify-center items-center">
+                        <a className="btn btn-ghost text-xl">
+                          <img className="w-9" src={logo}></img>
+                          <h1 className="text-sm">Recipe Ripple</h1>
+                        </a>
                 <h1 className="text-2xl text-center">Come and Cook <br />With <br />Recipe Ripple</h1>
               <img
                 alt="wallpaper"
