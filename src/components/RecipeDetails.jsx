@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaHeart } from "react-icons/fa";
-import { useParams } from "react-router"; // note: 'react-router-dom' is typical for web
+import { useParams } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const RecipeDetails = () => {
@@ -10,11 +10,9 @@ const RecipeDetails = () => {
   const [recipe, setRecipe] = useState(null);
   const [mainImage, setMainImage] = useState(null);
   const [likes, setLikes] = useState(0);
-  const [liked, setLiked] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
-    if (!id) return;
-
     fetch(`http://localhost:3000/recipes/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -22,38 +20,30 @@ const RecipeDetails = () => {
         setMainImage(data.image);
         setLikes(data.likeCount || 0);
 
-        // Check if current user liked this recipe
-        if (user?.email && data.likedBy?.includes(user.email)) {
-          setLiked(true);
-        } else {
-          setLiked(false);
+        // Determine if the current user is the owner
+        if (user?.email && data?.user?.email === user.email) {
+          setIsOwner(true);
         }
       })
       .catch((err) => console.error("Failed to fetch recipe details:", err));
   }, [id, user?.email]);
 
   const handleLike = async () => {
-    if (!user?.email) {
-      alert("You must be logged in to like a recipe.");
-      return;
-    }
+    if (isOwner) return alert("You cannot like your own recipe.");
 
     try {
       const res = await fetch(`http://localhost:3000/recipes/${id}/like`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userEmail: user.email, like: !liked }),
       });
 
-      if (!res.ok) throw new Error("Failed to update like");
+      if (!res.ok) throw new Error("Failed to like");
 
       const data = await res.json();
-
       setLikes(data.likeCount);
-      setLiked(!liked);
     } catch (error) {
       console.error(error);
-      alert("Could not update like count, please try again.");
+      alert("Could not like this recipe. Try again.");
     }
   };
 
@@ -70,12 +60,16 @@ const RecipeDetails = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <h1 className="lg:text-4xl text-xl font-bold text-center my-15">
-        {title}'s Recipe
-      </h1>
       <div className="container mx-auto px-4 py-8">
+        <h1 className="lg:text-4xl text-xl font-bold text-center my-7">
+          {title}'s Recipe
+        </h1>
+        <h2 className="text-xl font-semibold mb-6 text-center text-primary">
+          {likes} people interested in this recipe
+        </h2>
+
         <div className="flex flex-col lg:flex-row mx-4 gap-8">
-          {/* Images Section */}
+          {/* Image Section */}
           <div className="w-full md:w-1/2 px-4">
             <img
               src={mainImage}
@@ -98,7 +92,7 @@ const RecipeDetails = () => {
             <div className="mb-4">
               <h3 className="text-lg font-semibold mb-1">Categories:</h3>
               <ul className="flex flex-wrap gap-3">
-                {categories && categories.length ? (
+                {categories?.length > 0 ? (
                   categories.map((cat) => (
                     <li
                       key={cat}
@@ -128,12 +122,15 @@ const RecipeDetails = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={handleLike}
+                disabled={isOwner}
                 className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-colors ${
-                  liked ? "bg-red-600 text-white" : "bg-gray-200 text-gray-800"
+                  isOwner
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-gray-200 text-gray-800 hover:bg-red-600 hover:text-white"
                 }`}
               >
                 <FaHeart />
-                {liked ? "Liked" : "Like"}
+                Like
               </button>
               <span>
                 {likes} {likes === 1 ? "Like" : "Likes"}

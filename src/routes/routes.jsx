@@ -42,11 +42,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-recipes",
-        Component: MyRecipes,
+        element: (
+          <PrivateRoute>
+            <MyRecipes />
+          </PrivateRoute>
+        ),
       },
-            {
+      {
         path: "/recipes/:id",
-        Component: RecipeDetails,
+        element: (
+          <PrivateRoute>
+            <RecipeDetails />
+          </PrivateRoute>
+        ),
       },
     ],
   },
