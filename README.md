@@ -126,8 +126,8 @@ Make sure to create a `.env` file with necessary variables in both the client an
 
 ## 📞 Contact
 
-📧 Email: yourname@example.com  
-🔗 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)  
+📧 Email: iftekhar08019@gmail.com  
+
 🌐 Website: [https://recipe-ripple.web.app/](https://recipe-ripple.web.app/)
 
 ---
