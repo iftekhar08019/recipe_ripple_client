@@ -42,7 +42,7 @@ const AddRecipePage = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/recipes", {
+      const res = await fetch("https://recipe-ripple-server.vercel.app/recipes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipeData),
@@ -53,7 +53,7 @@ const AddRecipePage = () => {
       }
 
       const data = await res.json();
-      console.log("Recipe added:", data);
+      //console.log("Recipe added:", data);
 
       Swal.fire({
         title: "Success!",

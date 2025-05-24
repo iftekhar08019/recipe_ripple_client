@@ -6,7 +6,7 @@ const TopRecipe = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/top-recipes")
+    fetch("https://recipe-ripple-server.vercel.app/top-recipes")
       .then((res) => res.json())
       .then((data) => {
         setRecipes(data);

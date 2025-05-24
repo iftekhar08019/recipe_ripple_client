@@ -13,7 +13,7 @@ const RecipeDetails = () => {
   const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/recipes/${id}`)
+    fetch(`https://recipe-ripple-server.vercel.app/recipes/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setRecipe(data);
@@ -32,7 +32,7 @@ const RecipeDetails = () => {
     if (isOwner) return alert("You cannot like your own recipe.");
 
     try {
-      const res = await fetch(`http://localhost:3000/recipes/${id}/like`, {
+      const res = await fetch(`https://recipe-ripple-server.vercel.app/recipes/${id}/like`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
       });

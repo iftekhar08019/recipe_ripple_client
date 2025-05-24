@@ -8,7 +8,7 @@ const AllRecipe = () => {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/all-recipes/")
+    fetch("https://recipe-ripple-server.vercel.app/all-recipes/")
       .then((res) => res.json())
       .then((data) => {
         setRecipes(data);

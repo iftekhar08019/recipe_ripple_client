@@ -40,7 +40,7 @@ const HeroSlider = () => {
     <>
       <h1 className="lg:text-4xl text-xl font-bold text-center my-10">
         Recipe Ripple:
-        <Typewriter
+        <Typewriter 
           words={[
             "Your place for All Recipes",
             "Discover. Cook. Share.",

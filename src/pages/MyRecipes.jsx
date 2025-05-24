@@ -23,7 +23,7 @@ const MyRecipes = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/recipes?email=${user.email}`)
+      fetch(`https://recipe-ripple-server.vercel.app/recipes?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => setRecipes(data))
         .catch((err) => console.error("Failed to fetch recipes", err));
@@ -60,7 +60,7 @@ const MyRecipes = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/recipes/${editingRecipe._id}`,
+        `https://recipe-ripple-server.vercel.app/recipes/${editingRecipe._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -105,7 +105,7 @@ const MyRecipes = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/recipes/${id}`, {
+      const res = await fetch(`https://recipe-ripple-server.vercel.app/recipes/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");

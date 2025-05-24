@@ -71,7 +71,7 @@ const Registration = () => {
             };
 
             // POST user data to your backend
-            fetch("http://localhost:3000/users", {
+            fetch("https://recipe-ripple-server.vercel.app/users", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const Registration = () => {
             })
               .then((res) => res.json())
               .then((data) => {
-                console.log("User saved to backend:", data);
+                //console.log("User saved to backend:", data);
                 setUser({ ...user, displayName: name, photoURL: photo });
                 navigate(location.state ? location.state : "/");
               })
@@ -117,14 +117,14 @@ const Registration = () => {
         };
 
         // Send user data to backend
-        fetch("http://localhost:3000/users", {
+        fetch("https://recipe-ripple-server.vercel.app/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userProfile),
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("User saved to backend:", data);
+            //console.log("User saved to backend:", data);
             alert(`${user.displayName} registered successfully`);
             navigate(location.state ? location.state : "/");
           })
