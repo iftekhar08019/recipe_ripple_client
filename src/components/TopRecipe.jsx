@@ -19,7 +19,7 @@ const TopRecipe = () => {
       <h1 className="lg:text-4xl text-xl font-bold text-center mt-15">
         Top Recipes
       </h1>
-      <div className="lg:w-10/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="lg:w-10/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {recipes.map((recipe) => (
           <RecipeCard key={recipe._id} recipe={recipe} />
         ))}

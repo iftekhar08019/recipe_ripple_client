@@ -9,7 +9,7 @@ const navigate = useNavigate();
 const { _id: recipeId, title, cuisineType, likeCount, image } = recipe || {};
 
 return (
-    <div className="card bg-base-100 w-80 shadow-sm transition-transform duration-300 hover:scale-110 mt-6 ">
+    <div className="card bg-base-100 w-78 shadow-sm transition-transform duration-300 hover:scale-110 mt-6 ">
         <figure className="px-10 pt-10">
             <img
                 src={image || "https://via.placeholder.com/384x216?text=No+Image"}
