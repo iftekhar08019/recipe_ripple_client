@@ -4,6 +4,7 @@ import RecipeCard from '../components/RecipeCard';
 import TopRecipe from '../components/TopRecipe';
 import StatSection from '../components/StatSection';
 import QAPhoneMockup from '../components/QAPhoneMockUp';
+import MostPopularRecipe from '../components/MostPopularRecipe';
 
 const Home = () => {
     return (
@@ -11,6 +12,7 @@ const Home = () => {
             <HeroSlider></HeroSlider>
             <TopRecipe></TopRecipe>
             <QAPhoneMockup></QAPhoneMockup>
+            <MostPopularRecipe></MostPopularRecipe>
             <StatSection></StatSection>
         </div>
     );
