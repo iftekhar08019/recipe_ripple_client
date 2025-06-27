@@ -9,6 +9,7 @@ import AllRecipe from "../pages/AllRecipePage";
 import RecipeDetails from "../components/RecipeDetails";
 import PrivateRoute from "../Provider/PrivateRoute";
 import MyRecipes from "../pages/MyRecipes";
+import ContactUs from "../pages/ContactUs";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/contact",
+        element: <ContactUs />,
+      }
     ],
   },
 ]);

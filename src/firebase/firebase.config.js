@@ -2,12 +2,12 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDXwDsDWlQW6HCygInDLpyhPDt3ASDEmnM",
+  authDomain: "recipe-ripple.firebaseapp.com",
+  projectId: "recipe-ripple",
+  storageBucket: "recipe-ripple.firebasestorage.app",
+  messagingSenderId: "315251894945",
+  appId: "1:315251894945:web:cb7189e41c79131b30dee0"
 };
 
 const app = initializeApp(firebaseConfig);

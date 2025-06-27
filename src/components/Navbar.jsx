@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import logo from "../assets/logo.png";
 import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -54,6 +55,9 @@ const Navbar = () => {
               <NavLink to="/my-recipes">My Recipes</NavLink>
             </li>
             <li>
+              <NavLink to="/contact">Contact Us</NavLink>
+            </li>
+            <li>
               <label className="lg:hidden flex cursor-pointer gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -91,10 +95,10 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">
+        <Link className="btn btn-ghost text-xl" to="/">
           <img className="w-9" src={logo}></img>
           <h1 className="text-sm">Recipe Ripple</h1>
-        </a>
+        </Link>
       </div>
 
       <div className="navbar-center hidden lg:flex">
@@ -110,6 +114,9 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink to="/my-recipes">My Recipes</NavLink>
+          </li>
+          <li>
+            <NavLink to="/contact">Contact Us</NavLink>
           </li>
         </ul>
       </div>
