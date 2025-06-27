@@ -102,23 +102,38 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/all-recipes">All Recipes</NavLink>
-          </li>
-          <li>
-            <NavLink to="/add-recipe">Add Recipe</NavLink>
-          </li>
-          <li>
-            <NavLink to="/my-recipes">My Recipes</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact Us</NavLink>
-          </li>
-        </ul>
+        {!user ? (
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/all-recipes">All Recipes</NavLink>
+            </li>
+
+            <li>
+              <NavLink to="/contact">Contact Us</NavLink>
+            </li>
+          </ul>
+        ) : (
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/all-recipes">All Recipes</NavLink>
+            </li>
+            <li>
+              <NavLink to="/add-recipe">Add Recipe</NavLink>
+            </li>
+            <li>
+              <NavLink to="/my-recipes">My Recipes</NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact">Contact Us</NavLink>
+            </li>
+          </ul>
+        )}
       </div>
 
       <div className="navbar-end ">
